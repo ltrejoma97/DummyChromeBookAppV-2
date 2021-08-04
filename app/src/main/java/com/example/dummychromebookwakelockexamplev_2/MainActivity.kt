@@ -3,30 +3,38 @@ package com.example.dummychromebookwakelockexamplev_2
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.os.PowerManager
-import android.os.PowerManager.WakeLock
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.dummychromebookwakelockexamplev_2.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
-    private val isTouch: Boolean = false
+    private lateinit var binding:ActivityMainBinding
+    private lateinit var viewModel:MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
 
+        val exitButton: Button =binding.exitApp
+        exitButton.setOnClickListener {
+        finishAffinity()
+        }
+        viewModel.counter.observe(this, Observer { binding.timer.text=viewModel.counter.value.toString() })
+       viewModel.startTimeCounter(binding)
     }
 
-    override fun onCreateView(
-        parent: View?,
-        name: String,
-        context: Context,
-        attrs: AttributeSet
-    ): View? {
+    override fun onCreateView(parent: View?, name: String, context: Context, attrs: AttributeSet): View? {
+        viewModel=ViewModelProvider(this).get(MainViewModel::class.java)
         return super.onCreateView(parent, name, context, attrs)
     }
 
@@ -39,21 +47,10 @@ class MainActivity : AppCompatActivity() {
         when (eventAction) {
 
             MotionEvent.ACTION_DOWN -> {
-                Toast.makeText(
-                    this,
-                    "ACTION_DOWN AT COORDS " + "X: " + x + " Y: " + y,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            MotionEvent.ACTION_MOVE -> {
-                Toast.makeText(this, "MOVE " + "X: " + x + " Y: " + y, Toast.LENGTH_SHORT).show()
-            }
-            MotionEvent.ACTION_UP -> {
-                Toast.makeText(this, "ACTION_UP " + "X: " + x + " Y: " + y, Toast.LENGTH_SHORT)
-                    .show()
+                viewModel.resetCounter()
             }
             else ->{
-                Toast.makeText(this, "actividad", Toast.LENGTH_SHORT).show()
+                viewModel.resetCounter()
             }
         }
         return super.dispatchTouchEvent(event)
@@ -71,5 +68,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        when (keyCode){
+            KeyEvent.KEYCODE_SPACE ->{
+                viewModel.resetCounter()
+            }
+            else ->{
+                viewModel.resetCounter()
+            }
+        }
+
+        return super.onKeyUp(keyCode, event)
     }
 }
