@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
 
+
         val exitButton: Button =binding.exitApp
         exitButton.setOnClickListener {
         finishAffinity()
@@ -45,9 +46,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
 
-        val x: Float? = event?.getX()
-        val y: Float? = event?.getY()
-        val eventAction = event?.getAction()
+        val x: Float? = event?.x
+        val y: Float? = event?.y
+        val eventAction = event?.action
 
         when (eventAction) {
 

@@ -1,29 +1,27 @@
 package com.example.dummychromebookwakelockexamplev_2
 
+
 import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Context
 import android.os.CountDownTimer
 import android.util.Log
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dummychromebookwakelockexamplev_2.databinding.ActivityMainBinding
-import java.nio.channels.FileLock
 
-class MainViewModel( application: Application): AndroidViewModel(application),MyAccessibilityService.ContractToService {
+
+class MainViewModel( ): ViewModel(){
     private var _counter: MutableLiveData<Int> = MutableLiveData<Int>()
     val counter : LiveData<Int>
         get() = _counter
-    @SuppressLint("StaticFieldLeak")
-     lateinit var  myAccessibilityService:MyAccessibilityService
+  @SuppressLint("StaticFieldLeak")
+  lateinit var myAccessibilityService: MyAccessibilityService
     init {
+        myAccessibilityService= MyAccessibilityService()
         Log.i("ViewModel","SeCreoElViewMOdel")
-        myAccessibilityService = MyAccessibilityService(this)
-
         resetCounter()
     }
 
@@ -49,8 +47,6 @@ class MainViewModel( application: Application): AndroidViewModel(application),My
             }.start()
         }
     }
-    override fun notifityAllOk(chartTyped:String){
-        resetCounter()
-    }
+
 
 }
