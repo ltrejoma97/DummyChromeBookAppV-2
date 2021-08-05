@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Property.of
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -12,14 +13,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.dummychromebookwakelockexamplev_2.databinding.ActivityMainBinding
+
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding:ActivityMainBinding
     private lateinit var viewModel:MainViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +33,13 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel.counter.observe(this, Observer { binding.timer.text=viewModel.counter.value.toString() })
        viewModel.startTimeCounter(binding)
+
     }
 
     override fun onCreateView(parent: View?, name: String, context: Context, attrs: AttributeSet): View? {
-        viewModel=ViewModelProvider(this).get(MainViewModel::class.java)
+
+        viewModel= ViewModelProvider(this).get(MainViewModel::class.java)
+
         return super.onCreateView(parent, name, context, attrs)
     }
 
