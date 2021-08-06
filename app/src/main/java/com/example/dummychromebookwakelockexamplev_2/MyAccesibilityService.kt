@@ -2,6 +2,7 @@ package com.example.dummychromebookwakelockexamplev_2
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 
 
@@ -9,6 +10,7 @@ class MyAccessibilityService : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
         val eventType = event.eventType
         var eventText: String? = null
+
         when (eventType) {
             AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED -> eventText = "Typed: "
         }
@@ -16,6 +18,8 @@ class MyAccessibilityService : AccessibilityService() {
 
         //print the typed text in the console. Or do anything you want here.
         println("ACCESSIBILITY SERVICE : $eventText")
+        Log.i("ACCESSIBILITY SERVICE ", " actividad extra$eventText")
+
     }
 
     override fun onInterrupt() {
